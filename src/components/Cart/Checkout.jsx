@@ -19,7 +19,6 @@ const INITIAL_STATE = {
 };
 
 const dispatchFunc = (prevState, action) => {
-  console.log(prevState);
   switch (action.type) {
     case "CHANGE_HANDLER":
       return { ...prevState, [action.id]: action.value };
@@ -71,30 +70,51 @@ const Checkout = (props) => {
     if (valuesAreValid) {
       return;
     }
-    console.log({
+
+    const orderItem = {
       clientData: state,
       orderData: { items, totalAmount },
-    });
+    };
+    const fetchData = async () => {
+      try {
+        const response = await fetch(
+          "https://food-order-basket-default-rtdb.firebaseio.com/orders.json",
+          {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(orderItem),
+          }
+        )
+        if(!response.ok){
+            throw new Error('kata bar!')
+        }
+
+      } catch (error) {
+        console.log(error.message);
+      }
+    };
+    fetchData();
     resetItems();
     dispatch({ type: "RESET" });
   };
 
-  const nameClass =
-    !state.validation.nameIsValid && state.validation.nameIsTouched
-      ? classes.invalid
-      : classes.control;
-  const streetClass =
-    !state.validation.streetIsValid && state.validation.streetIsTouched
-      ? classes.invalid
-      : classes.control;
-  const postalCodeClass =
-    !state.validation.postalCodeIsValid && state.validation.postalCodeIsTouched
-      ? classes.invalid
-      : classes.control;
-  const cityClass =
-    !state.validation.cityIsValid && state.validation.cityIsTouched
-      ? classes.invalid
-      : classes.control;
+  const nameIsInvalid =
+    !state.validation.nameIsValid && state.validation.nameIsTouched;
+  const nameClass = nameIsInvalid ? classes.invalid : classes.control;
+
+  const streetIsInvalid =
+    !state.validation.streetIsValid && state.validation.streetIsTouched;
+  const streetClass = streetIsInvalid ? classes.invalid : classes.control;
+
+  const postalCodeIsInvalid =
+    !state.validation.postalCodeIsValid && state.validation.postalCodeIsTouched;
+  const postalCodeClass = postalCodeIsInvalid
+    ? classes.invalid
+    : classes.control;
+
+  const cityIsInvalid =
+    !state.validation.cityIsValid && state.validation.cityIsTouched;
+  const cityClass = cityIsInvalid ? classes.invalid : classes.control;
 
   return (
     <form onSubmit={confirmHandler}>
@@ -106,6 +126,9 @@ const Checkout = (props) => {
           type="text"
           id="name"
         />
+        {nameIsInvalid && (
+          <p className={classes["error-text"]}>Name must not be empty!</p>
+        )}
       </div>
       <div className={streetClass}>
         <label htmlFor="street">Street</label>
@@ -115,6 +138,9 @@ const Checkout = (props) => {
           id="street"
           onChange={inputChangeHandler}
         />
+        {streetIsInvalid && (
+          <p className={classes["error-text"]}>Street must not be empty!</p>
+        )}
       </div>
       <div className={postalCodeClass}>
         <label htmlFor="postalCode">Postal code</label>
@@ -124,15 +150,21 @@ const Checkout = (props) => {
           id="postalCode"
           onChange={inputChangeHandler}
         />
+        {postalCodeIsInvalid && (
+          <p className={classes["error-text"]}>PostalCode must not be empty!</p>
+        )}
       </div>
       <div className={cityClass}>
         <label htmlFor="city">City</label>
         <input
-          value={state.city} 
+          value={state.city}
           type="text"
           id="city"
           onChange={inputChangeHandler}
         />
+        {cityIsInvalid && (
+          <p className={classes["error-text"]}>City must not be empty!</p>
+        )}
       </div>
       <button type="button" onClick={props.onCancel}>
         Cancel
