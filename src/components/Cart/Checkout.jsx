@@ -128,7 +128,7 @@ const Checkout = (props) => {
       <div className={cityClass}>
         <label htmlFor="city">City</label>
         <input
-          value={state.city}
+          value={state.city} 
           type="text"
           id="city"
           onChange={inputChangeHandler}
