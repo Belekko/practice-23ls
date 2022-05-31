@@ -3,6 +3,7 @@ import CartContext from "../../store/cart-context";
 import Modal from "../UI/Modal";
 import classes from "./Cart.module.css";
 import CartItem from "./CartItem";
+import Checkout from "./Checkout";
 
 const Cart = (props) => {
   const cartCtx = useContext(CartContext);
@@ -18,6 +19,7 @@ const Cart = (props) => {
   };
 
   const cartItems = (
+    <>
     <ul className={classes["cart-items"]}>
       {cartCtx.items.map((item) => (
         <CartItem
@@ -32,6 +34,9 @@ const Cart = (props) => {
         </CartItem>
       ))}
     </ul>
+    <Checkout/>
+    </>
+
   );
 
   return (
