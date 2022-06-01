@@ -1,6 +1,9 @@
 import { useContext, useReducer } from "react";
 import CartContext from "../../store/cart-context";
 import classes from "./Checkout.module.css";
+
+
+
 const INITIAL_STATE = {
   name: "",
   street: "",
