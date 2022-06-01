@@ -1,0 +1,14 @@
+{
+  "files": {
+    "main.css": "/practice-23ls/static/css/main.a502f450.css",
+    "main.js": "/practice-23ls/static/js/main.8f788d0a.js",
+    "static/media/meals.jpg": "/practice-23ls/static/media/meals.2971f633fc1382581cbf.jpg",
+    "index.html": "/practice-23ls/index.html",
+    "main.a502f450.css.map": "/practice-23ls/static/css/main.a502f450.css.map",
+    "main.8f788d0a.js.map": "/practice-23ls/static/js/main.8f788d0a.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.a502f450.css",
+    "static/js/main.8f788d0a.js"
+  ]
+}
