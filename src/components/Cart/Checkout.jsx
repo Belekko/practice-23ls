@@ -2,8 +2,6 @@ import { useContext, useReducer } from "react";
 import CartContext from "../../store/cart-context";
 import classes from "./Checkout.module.css";
 
-
-
 const INITIAL_STATE = {
   name: "",
   street: "",
@@ -87,11 +85,10 @@ const Checkout = (props) => {
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify(orderItem),
           }
-        )
-        if(!response.ok){
-            throw new Error('kata bar!')
+        );
+        if (!response.ok) {
+          throw new Error("kata bar!");
         }
-
       } catch (error) {
         console.log(error.message);
       }
@@ -103,21 +100,27 @@ const Checkout = (props) => {
 
   const nameIsInvalid =
     !state.validation.nameIsValid && state.validation.nameIsTouched;
-  const nameClass = nameIsInvalid ? classes.invalid : classes.control;
+  const nameClass = nameIsInvalid
+    ? `${classes.invalid} ${classes.control}`
+    : classes.control;
 
   const streetIsInvalid =
     !state.validation.streetIsValid && state.validation.streetIsTouched;
-  const streetClass = streetIsInvalid ? classes.invalid : classes.control;
+  const streetClass = streetIsInvalid
+    ? `${classes.invalid} ${classes.control}`
+    : classes.control;
 
   const postalCodeIsInvalid =
     !state.validation.postalCodeIsValid && state.validation.postalCodeIsTouched;
   const postalCodeClass = postalCodeIsInvalid
-    ? classes.invalid
+    ? `${classes.invalid} ${classes.control}`
     : classes.control;
 
   const cityIsInvalid =
     !state.validation.cityIsValid && state.validation.cityIsTouched;
-  const cityClass = cityIsInvalid ? classes.invalid : classes.control;
+  const cityClass = cityIsInvalid
+    ? `${classes.invalid} ${classes.control}`
+    : classes.control;
 
   return (
     <form onSubmit={confirmHandler}>
