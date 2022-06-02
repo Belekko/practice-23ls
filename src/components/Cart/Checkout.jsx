@@ -64,38 +64,42 @@ const Checkout = (props) => {
     event.preventDefault();
     dispatch({ type: "VALIDATION" });
     const valuesAreValid =
-      !state.validation.nameIsValid ||
-      !state.validation.streetIsValid ||
-      !state.validation.cityIsValid ||
-      !state.validation.postalCodeIsValid;
-    if (valuesAreValid) {
+      state.validation.nameIsValid &&
+      state.validation.streetIsValid &&
+      state.validation.cityIsValid &&
+      state.validation.postalCodeIsValid;
+    console.log(valuesAreValid);
+    if (!valuesAreValid) {
       return;
-    }
-
-    const orderItem = {
-      clientData: state,
-      orderData: { items, totalAmount },
-    };
-    const fetchData = async () => {
-      try {
-        const response = await fetch(
-          "https://food-order-basket-default-rtdb.firebaseio.com/orders.json",
-          {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(orderItem),
+    } else {
+      const clientData = state;
+      delete clientData.validation
+      console.log(clientData);
+      const orderItem = {
+        clientData: clientData,
+        orderData: { items, totalAmount },
+      };
+      const fetchData = async () => {
+        try {
+          const response = await fetch(
+            "https://food-order-basket-default-rtdb.firebaseio.com/orders.json",
+            {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify(orderItem),
+            }
+          );
+          if (!response.ok) {
+            throw new Error("kata bar!");
           }
-        );
-        if (!response.ok) {
-          throw new Error("kata bar!");
+        } catch (error) {
+          console.log(error.message);
         }
-      } catch (error) {
-        console.log(error.message);
-      }
-    };
-    fetchData();
-    resetItems();
-    dispatch({ type: "RESET" });
+      };
+      fetchData();
+      resetItems();
+      dispatch({ type: "RESET" });
+    }
   };
 
   const nameIsInvalid =
